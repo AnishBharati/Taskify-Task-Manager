@@ -1,0 +1,47 @@
+.container {
+  height: 4rem;
+  width: 100%;
+  background-color: #f1f0e8;
+  box-shadow: 0 1px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userimg {
+  border-radius: 50%;
+}
+.title {
+  font-size: 2vh;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  padding-right: 1rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-left: 1rem;
+  border-radius: 10px;
+  width: 35%;
+  height: 1.5rem;
+}
+.input {
+  border: none;
+  height: 32px;
+  width: 100%;
+  font-size: 2vh;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1400px;
+}
+.icons {
+  display: flex;
+  gap: 3rem;
+}
