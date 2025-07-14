@@ -1,10 +1,10 @@
 "use client"; // This is a client component
 
 import React, { useState, useEffect } from "react";
-import axios from "/home/ayush/Documents/GitHub/taskifyrs/frontend_taskify/src/app/axiosSetup"; // Import axios setup file
+import axios from "../../axiosSetup"; // Import axios setup file
 import styles from "./page.module.css";
-import { useRouter } from 'next/navigation';
-import { isAuthenticated } from '../auth.js';
+import { useRouter } from "next/navigation";
+import { isAuthenticated } from "../auth.js";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -13,14 +13,15 @@ const Home = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push('/dashboard'); // Redirect to dashboard if already authenticated
+      router.push("/dashboard"); // Redirect to dashboard if already authenticated
     }
   }, []);
 
   function handleSubmit(event) {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
     event.preventDefault();
     axios
-      .post("http://localhost:8080/login", { username, password })
+      .post(`${backendUrl}/login`, { username, password })
       .then((res) => {
         const token = res.data.token; // Get the token from the response
         localStorage.setItem("token", token); // Store the token in localStorage
@@ -40,7 +41,9 @@ const Home = () => {
     <div className={styles.main}>
       {/* Left page */}
       <div className={styles.main2}>
-        <h1 className={styles.left_head}>Organize your work and life, finally</h1>
+        <h1 className={styles.left_head}>
+          Organize your work and life, finally
+        </h1>
         <p className={styles.left_btm}>
           Become focused, organized, and calm with TASKify.
           <br />
@@ -53,7 +56,9 @@ const Home = () => {
         <h1 className={styles.logo}>TASKify</h1>
         <div className={styles.form}>
           <h1 className={styles.fmhd}>LOG IN</h1>
-          <h3 className={styles.heading}>Use one of the services to continue with TASKify</h3>
+          <h3 className={styles.heading}>
+            Use one of the services to continue with TASKify
+          </h3>
 
           {/* Username Input */}
           <form onSubmit={handleSubmit}>

@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -13,9 +13,10 @@ const Home = () => {
   const router = useRouter();
 
   function handleSubmit(event) {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
     event.preventDefault();
     axios
-      .post("http://localhost:8080/signup", {
+      .post(`${backendUrl}/signup`, {
         fullname,
         email,
         username,
@@ -29,7 +30,7 @@ const Home = () => {
         setUsername("");
         setPassword("");
         // Redirect to login page
-        router.push('/login');
+        router.push("/login");
       })
       .catch((err) => console.log(err));
   }

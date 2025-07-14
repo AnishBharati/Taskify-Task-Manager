@@ -1,8 +1,8 @@
-'use client';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { FaPlus } from 'react-icons/fa';
-import Modal from 'react-modal';
+"use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { FaPlus } from "react-icons/fa";
+import Modal from "react-modal";
 import styles from "./page.module.css";
 
 export default function TeamMembers() {
@@ -10,31 +10,31 @@ export default function TeamMembers() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [getData, setGetData] = useState(null);
-  const [selectedMemberId, setSelectedMemberId] = useState('');
+  const [selectedMemberId, setSelectedMemberId] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error('Authentication token not found');
+          throw new Error("Authentication token not found");
         }
-
-        const response = await fetch('http://localhost:8080/see_members', {
-          method: 'GET',
+        const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
+        const response = await fetch(`${backendUrl}/see_members`, {
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (!response.ok) {
-          throw new Error('No data');
+          throw new Error("No data");
         }
 
         const data = await response.json();
         setResponseData(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setError(error.message);
       }
     };
@@ -50,62 +50,69 @@ export default function TeamMembers() {
   };
 
   const getalldata = async () => {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error('Authentication token not found');
+        throw new Error("Authentication token not found");
       }
-      
-      const response = await fetch('http://localhost:8080/getalldata', {
-        method: 'GET',
+      const response = await fetch(`${backendUrl}/getalldata`, {
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-  
+
       if (!response.ok) {
-        throw new Error('No data');
+        throw new Error("No data");
       }
-  
+
       const data = await response.json();
       console.log("Get all data: ", data); // Display the data in console
       setGetData(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setError(error.message);
     }
   };
 
   const addmember = (memberId) => {
-    const token = localStorage.getItem('token');
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('Authentication token not found');
+      alert("Authentication token not found");
       return;
     }
     const payload = JSON.stringify({ member_id: memberId });
-    console.log('Adding member with payload:', payload);
+    console.log("Adding member with payload:", payload);
     axios
-      .post('http://localhost:8080/add_members', payload, {
+      .post(`${backendUrl}/add_members`, payload, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((response) => {
         console.log(`Member ${memberId} is added`);
       })
       .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
           alert(error.response.data.error); // Show alert for error message from backend
         } else {
-          alert('Failed to update task status'); // Generic error alert
+          alert("Failed to update task status"); // Generic error alert
         }
       });
   };
 
   const handleSelectChange = (event) => {
     const selectedName = event.target.value;
-    const selectedMember = getData.tasks.find(task => task.Full_Name === selectedName);
+    const selectedMember = getData.tasks.find(
+      (task) => task.Full_Name === selectedName
+    );
     if (selectedMember) {
       setSelectedMemberId(selectedMember.id); // Assuming the ID field is 'id'
     }
@@ -116,7 +123,7 @@ export default function TeamMembers() {
       addmember(selectedMemberId);
       handleModalToggle();
     } else {
-      alert('Please select a member');
+      alert("Please select a member");
     }
   };
 
@@ -126,16 +133,24 @@ export default function TeamMembers() {
       <div className={styles.plusIcon} onClick={handleModalToggle}>
         <FaPlus size={16} />
       </div>
-      <Modal isOpen={isModalOpen} onRequestClose={handleModalToggle} className={styles.modal}>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleModalToggle}
+        className={styles.modal}
+      >
         <h2>Add Members</h2>
         {error ? (
           <p>Error: {error}</p>
         ) : getData ? (
           <div>
             <select onChange={handleSelectChange}>
-              <option value="" disabled selected>Select</option>
+              <option value="" disabled selected>
+                Select
+              </option>
               {getData.tasks.map((task, index) => (
-                <option key={index} value={task.Full_Name}>{task.Full_Name}</option>
+                <option key={index} value={task.Full_Name}>
+                  {task.Full_Name}
+                </option>
               ))}
             </select>
           </div>

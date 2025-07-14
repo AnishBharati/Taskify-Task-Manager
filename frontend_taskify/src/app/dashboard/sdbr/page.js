@@ -30,7 +30,7 @@ export default function Sidebar() {
           <Link href="/dashboard/workplace" className={styles.item4}>
             Workplace
           </Link>
-         
+
           <button onClick={handleLogout} className={styles.item5}>
             Logout
           </button>

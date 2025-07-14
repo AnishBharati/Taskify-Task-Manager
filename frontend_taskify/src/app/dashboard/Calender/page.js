@@ -69,12 +69,14 @@ const CalendarComponent = () => {
 
 const AddedEvents = ({ events, onDeleteEvent }) => (
   <div>
-    <h2>    Events:</h2>
+    <h2> Events:</h2>
     <ul>
       {events.map((event, index) => (
         <li key={index}>
           <strong>{event.date.toDateString()}:</strong> {event.description}
-          <button onClick={() => onDeleteEvent(index)}><MdDelete /></button>
+          <button onClick={() => onDeleteEvent(index)}>
+            <MdDelete />
+          </button>
         </li>
       ))}
     </ul>

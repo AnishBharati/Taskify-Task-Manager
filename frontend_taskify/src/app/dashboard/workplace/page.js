@@ -9,27 +9,28 @@ export default function Workplace() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL; // Define the backend URL
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error('Authentication token not found');
+          throw new Error("Authentication token not found");
         }
 
-        const response = await fetch('http://localhost:8080/see_workplace', {
-          method: 'GET',
+        const response = await fetch(`${backendUrl}/see_workplace`, {
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (!response.ok) {
-          throw new Error('No data');
+          throw new Error("No data");
         }
 
         const data = await response.json();
         setResponseData(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setError(error.message);
       }
     };
