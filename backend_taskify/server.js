@@ -6,11 +6,14 @@ const app = express();
 app.use(express.json());
 
 // Configure CORS to allow requests from your frontend
-app.use(cors({
-  origin: 'http://localhost:3000', // Adjust this to match your frontend's URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://taskify-task-manager.onrender.com"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Only if you're using cookies or auth headers
+  })
+);
 
 app.use("/", routes);
 
